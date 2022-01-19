@@ -18,7 +18,7 @@ const List = ({navigation}) => {
   );
 };
 
-List.protoType = {
+List.propTypes = {
   navigation: PropTypes.object,
 };
 

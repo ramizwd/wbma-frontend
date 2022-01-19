@@ -12,7 +12,7 @@ const Home = ({navigation}) => {
   );
 };
 
-Home.protoType = {
+Home.propTypes = {
   navigation: PropTypes.object,
 };
 
