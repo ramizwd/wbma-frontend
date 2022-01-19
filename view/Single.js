@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-Single.protoType = {
+Single.propTypes = {
   route: PropTypes.object,
 };
 
