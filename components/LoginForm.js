@@ -71,6 +71,7 @@ const LoginForm = () => {
         name="password"
       />
       {errors.password && <Text>This is required.</Text>}
+
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
     </View>
   );
