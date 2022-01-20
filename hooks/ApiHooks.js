@@ -23,7 +23,7 @@ const useMedia = () => {
     } catch (e) {
       console.error(e);
     }
-    console.log(mediaArray);
+    // console.log(mediaArray);
   };
 
   useEffect(() => {
