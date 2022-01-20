@@ -6,7 +6,7 @@ import {MainContext} from '../context/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginForm = () => {
-  const {setIsLoggedIn} = useContext(MainContext);
+  const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postLogin} = useLogin();
 
   const {
@@ -25,6 +25,7 @@ const LoginForm = () => {
     try {
       const userData = await postLogin(data);
       await AsyncStorage.setItem('userToken', userData.token);
+      setUser(userData.user);
       setIsLoggedIn(true);
     } catch (err) {
       console.error(err);
@@ -40,7 +41,7 @@ const LoginForm = () => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <TextInput
-            style={{borderWidth: 1}}
+            style={{borderWidth: 1, padding: 10}}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -59,7 +60,7 @@ const LoginForm = () => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <TextInput
-            style={{borderWidth: 1}}
+            style={{borderWidth: 1, padding: 10}}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
