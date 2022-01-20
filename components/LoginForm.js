@@ -1,8 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Text, View, TextInput, Button} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
+import {useLogin} from '../hooks/ApiHooks';
+import {MainContext} from '../context/MainContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginForm = () => {
+  const {setIsLoggedIn} = useContext(MainContext);
+  const {postLogin} = useLogin();
+
   const {
     control,
     handleSubmit,
@@ -13,7 +19,17 @@ const LoginForm = () => {
       password: '',
     },
   });
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      const userData = await postLogin(data);
+      await AsyncStorage.setItem('userToken', userData.token);
+      setIsLoggedIn(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <View>
@@ -28,6 +44,7 @@ const LoginForm = () => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            autoCapitalize="none"
           />
         )}
         name="username"
@@ -45,6 +62,7 @@ const LoginForm = () => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            autoCapitalize="none"
           />
         )}
         name="password"
