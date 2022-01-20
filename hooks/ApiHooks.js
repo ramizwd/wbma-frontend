@@ -23,7 +23,6 @@ const useMedia = () => {
     } catch (e) {
       console.error(e);
     }
-    // console.log(mediaArray);
   };
 
   useEffect(() => {
@@ -77,7 +76,28 @@ const useUser = () => {
     }
   };
 
-  return {getUserByToken};
+  const postUser = async (data) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    try {
+      const response = await fetch(baseUrl + 'users', options);
+      const userData = response.json();
+      if (response.ok) {
+        return userData;
+      } else {
+        throw new Error(userData.message);
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  return {getUserByToken, postUser};
 };
 
 export {useMedia, useLogin, useUser};
