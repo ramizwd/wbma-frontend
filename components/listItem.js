@@ -1,9 +1,18 @@
-import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useContext} from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
+import {MainContext} from '../context/MainContext';
 
 const ListItem = ({navigation, singleMedia}) => {
+  const {isLoading} = useContext(MainContext);
   return (
     <TouchableOpacity
       style={styles.row}
@@ -11,10 +20,14 @@ const ListItem = ({navigation, singleMedia}) => {
         navigation.navigate('Single', {file: singleMedia});
       }}
     >
-      <Image
-        source={{uri: uploadsUrl + singleMedia.thumbnails.w160}}
-        style={styles.image}
-      />
+      {!isLoading ? (
+        <Image
+          source={{uri: uploadsUrl + singleMedia.thumbnails.w160}}
+          style={styles.image}
+        />
+      ) : (
+        <ActivityIndicator size="large" color="#0000ff" />
+      )}
       <View style={styles.text}>
         <Text style={styles.title}>{singleMedia.title}</Text>
         <Text>{singleMedia.description}</Text>

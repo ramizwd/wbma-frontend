@@ -5,9 +5,12 @@ const MainContext = React.createContext({});
 
 const MainProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <MainContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
+    <MainContext.Provider
+      value={{isLoggedIn, isLoading, setIsLoggedIn, setIsLoading}}
+    >
       {props.children}
     </MainContext.Provider>
   );
