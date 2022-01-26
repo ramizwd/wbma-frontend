@@ -1,18 +1,13 @@
 import React, {useContext, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableOpacity,
-  Keyboard,
-} from 'react-native';
+import {TouchableOpacity, Keyboard, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../context/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
+import {Text} from 'react-native-elements';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const Login = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
@@ -46,24 +41,24 @@ const Login = ({navigation}) => {
       style={{flex: 1}}
       activeOpacity={1}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : ''}
-        style={styles.container}
-      >
-        <Text>Login</Text>
+      <KeyboardAwareScrollView>
+        <Text style={styles.text} h2>
+          Login
+        </Text>
         <LoginForm />
+        <Text style={styles.text} h2>
+          Register
+        </Text>
         <RegisterForm />
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  text: {
+    textAlign: 'center',
+    padding: 5,
   },
 });
 

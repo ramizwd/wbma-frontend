@@ -1,9 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, SafeAreaView, Text, Button, Image} from 'react-native';
+import {SafeAreaView, View, StyleSheet} from 'react-native';
 import {MainContext} from '../context/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
+import {Text, Button, Avatar} from 'react-native-elements';
 
 const Profile = () => {
   const {setIsLoggedIn, user} = useContext(MainContext);
@@ -41,21 +42,28 @@ const Profile = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Profile</Text>
-      <Text>{user.username}</Text>
-      <Image
+      <Avatar size={200} rounded source={{uri: avatar}} />
+      {/* <Image
         source={{uri: avatar}}
         style={{width: '80%', height: '50%'}}
         resizeMode="contain"
-      />
-      <Text>{user.email}</Text>
-      <Text>{user.full_name}</Text>
+      /> */}
+      <View style={styles.info}>
+        <Text>{user.username}</Text>
+
+        <Text>{user.email}</Text>
+        <Text>{user.full_name}</Text>
+      </View>
       <Button
         title="LOGOUT!"
         onPress={async () => {
           // Log out
           await AsyncStorage.clear();
           setIsLoggedIn(false);
+        }}
+        buttonStyle={{
+          borderRadius: 6,
+          marginHorizontal: 20,
         }}
       />
     </SafeAreaView>
@@ -67,8 +75,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 40,
+    paddingTop: 100,
+  },
+  info: {
+    padding: 20,
+    alignItems: 'center',
   },
 });
 
