@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useLogin} from '../hooks/ApiHooks';
 import {MainContext} from '../context/MainContext';
@@ -19,6 +19,7 @@ const LoginForm = () => {
       username: '',
       password: '',
     },
+    mode: 'onBlur',
   });
 
   const onSubmit = async (data) => {
@@ -47,11 +48,11 @@ const LoginForm = () => {
             value={value}
             autoCapitalize="none"
             placeholder="Username"
+            errorMessage={errors.username && errors.username.message}
           />
         )}
         name="username"
       />
-      {errors.username && <Text>This is required.</Text>}
 
       <Controller
         control={control}
@@ -67,11 +68,11 @@ const LoginForm = () => {
             autoCapitalize="none"
             secureTextEntry={true}
             placeholder="Password"
+            errorMessage={errors.username && errors.username.message}
           />
         )}
         name="password"
       />
-      {errors.password && <Text>This is required.</Text>}
 
       <Button
         title="Submit"

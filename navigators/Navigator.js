@@ -8,6 +8,7 @@ import Single from '../view/Single';
 import Login from '../view/Login';
 import {MainContext} from '../context/MainContext';
 import {Icon} from 'react-native-elements';
+import ModifyUser from '../view/ModifyUser';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -55,6 +56,10 @@ const StackScreen = () => {
             name="Single"
             component={Single}
             options={{headerTitleAlign: 'center'}}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Modify user"
+            component={ModifyUser}
           ></Stack.Screen>
         </>
       ) : (

@@ -1,15 +1,16 @@
-import React, {useContext, useEffect} from 'react';
-import {TouchableOpacity, Keyboard, StyleSheet} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {TouchableOpacity, Keyboard} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../context/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
-import {Text} from 'react-native-elements';
+import {ButtonGroup, Card} from 'react-native-elements';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const Login = ({navigation}) => {
+  const [formToggle, setFormToggle] = useState(true);
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {getUserByToken} = useUser();
 
@@ -42,25 +43,31 @@ const Login = ({navigation}) => {
       activeOpacity={1}
     >
       <KeyboardAwareScrollView>
-        <Text style={styles.text} h2>
-          Login
-        </Text>
-        <LoginForm />
-        <Text style={styles.text} h2>
-          Register
-        </Text>
-        <RegisterForm />
+        <Card>
+          <ButtonGroup
+            onPress={() => setFormToggle(!formToggle)}
+            selectedIndex={formToggle ? 0 : 1}
+            buttons={['Login', 'Register']}
+          />
+        </Card>
+        {formToggle ? (
+          <Card>
+            <Card.Title>Login</Card.Title>
+            <Card.Divider />
+
+            <LoginForm />
+          </Card>
+        ) : (
+          <Card>
+            <Card.Title>Register</Card.Title>
+            <Card.Divider />
+            <RegisterForm setFormToggle={setFormToggle} />
+          </Card>
+        )}
       </KeyboardAwareScrollView>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    textAlign: 'center',
-    padding: 5,
-  },
-});
 
 Login.propTypes = {
   navigation: PropTypes.object,

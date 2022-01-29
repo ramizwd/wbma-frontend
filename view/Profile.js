@@ -1,12 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {SafeAreaView, View, StyleSheet} from 'react-native';
+import {SafeAreaView, View, StyleSheet, Alert} from 'react-native';
 import {MainContext} from '../context/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import {Text, Button, Avatar} from 'react-native-elements';
+import {PropTypes} from 'prop-types';
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   const {setIsLoggedIn, user} = useContext(MainContext);
   const [avatar, setAvatar] = useState('http://placekitten.com/640');
   const {postTag, getFilesByTag} = useTag();
@@ -18,7 +19,7 @@ const Profile = () => {
       const avatar = avatarArray.pop();
       setAvatar(uploadsUrl + avatar.filename);
     } catch (error) {
-      console.error(error.message);
+      console.log(error.message);
     }
   };
 
@@ -43,11 +44,6 @@ const Profile = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Avatar size={200} rounded source={{uri: avatar}} />
-      {/* <Image
-        source={{uri: avatar}}
-        style={{width: '80%', height: '50%'}}
-        resizeMode="contain"
-      /> */}
       <View style={styles.info}>
         <Text>{user.username}</Text>
 
@@ -60,6 +56,16 @@ const Profile = () => {
           // Log out
           await AsyncStorage.clear();
           setIsLoggedIn(false);
+        }}
+        buttonStyle={{
+          borderRadius: 6,
+          marginHorizontal: 20,
+        }}
+      />
+      <Button
+        title="Modify user"
+        onPress={() => {
+          navigation.navigate('Modify user');
         }}
         buttonStyle={{
           borderRadius: 6,
@@ -82,5 +88,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+Profile.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default Profile;
