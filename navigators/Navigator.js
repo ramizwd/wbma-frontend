@@ -9,6 +9,7 @@ import Login from '../view/Login';
 import {MainContext} from '../context/MainContext';
 import {Icon} from 'react-native-elements';
 import ModifyUser from '../view/ModifyUser';
+import Upload from '../view/Upload';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -35,6 +36,17 @@ const TabScreen = () => {
           ),
         }}
         component={Profile}
+      ></Tab.Screen>
+      <Tab.Screen
+        name="Upload"
+        options={{
+          tabBarLabel: 'Upload',
+          headerTitleAlign: 'center',
+          tabBarIcon: ({color}) => (
+            <Icon name="backup" color={color} size={26} />
+          ),
+        }}
+        component={Upload}
       ></Tab.Screen>
     </Tab.Navigator>
   );
