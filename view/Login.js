@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {TouchableOpacity, Keyboard} from 'react-native';
+import {TouchableOpacity, Keyboard, View, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../context/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,6 +8,7 @@ import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import {ButtonGroup, Card} from 'react-native-elements';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Logo from '../assets/logo.svg';
 
 const Login = ({navigation}) => {
   const [formToggle, setFormToggle] = useState(true);
@@ -43,6 +44,9 @@ const Login = ({navigation}) => {
       activeOpacity={1}
     >
       <KeyboardAwareScrollView>
+        <View style={styles.appTitle}>
+          <Logo style={styles.logo} />
+        </View>
         <Card>
           <ButtonGroup
             onPress={() => setFormToggle(!formToggle)}
@@ -68,6 +72,17 @@ const Login = ({navigation}) => {
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  appTitle: {
+    flex: 1,
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    height: 100,
+  },
+});
 
 Login.propTypes = {
   navigation: PropTypes.object,

@@ -27,17 +27,6 @@ const TabScreen = () => {
         component={Home}
       ></Tab.Screen>
       <Tab.Screen
-        name="Profile"
-        options={{
-          tabBarLabel: 'Profile',
-          headerTitleAlign: 'center',
-          tabBarIcon: ({color}) => (
-            <Icon name="person" color={color} size={26} />
-          ),
-        }}
-        component={Profile}
-      ></Tab.Screen>
-      <Tab.Screen
         name="Upload"
         options={{
           tabBarLabel: 'Upload',
@@ -47,6 +36,17 @@ const TabScreen = () => {
           ),
         }}
         component={Upload}
+      ></Tab.Screen>
+      <Tab.Screen
+        name="Profile"
+        options={{
+          tabBarLabel: 'Profile',
+          headerTitleAlign: 'center',
+          tabBarIcon: ({color}) => (
+            <Icon name="person" color={color} size={26} />
+          ),
+        }}
+        component={Profile}
       ></Tab.Screen>
     </Tab.Navigator>
   );
