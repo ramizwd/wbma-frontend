@@ -27,14 +27,14 @@ const useMedia = () => {
   const loadMedia = async (start = 0, limit = 10) => {
     setLoading(true);
     try {
-      // const response = await fetch(
-      //   `${baseUrl}media?start=${start}&limit=${limit}`
-      // );
-      // if (!response) {
-      //   throw Error(response.statusText);
-      // }
-      // const json = await response.json();
-      const json = await useTag().getFilesByTag(appId);
+      const response = await fetch(
+        `${baseUrl}media?start=${start}&limit=${limit}`
+      );
+      if (!response) {
+        throw Error(response.statusText);
+      }
+      const json = await response.json();
+      // const json = await useTag().getFilesByTag(appId);
       const media = await Promise.all(
         json.map(async (item) => {
           const response = await fetch(baseUrl + 'media/' + item.file_id);
@@ -51,7 +51,7 @@ const useMedia = () => {
   };
 
   useEffect(() => {
-    loadMedia(0, 5);
+    loadMedia(0, 50);
   }, [update]);
 
   const postMedia = async (formData, token) => {
@@ -95,6 +95,13 @@ const useUser = () => {
     return await doFetch(baseUrl + 'users/user', options);
   };
 
+  const getUserById = async (userId, token) => {
+    const options = {
+      headers: {'x-access-token': token},
+    };
+    return await doFetch(`${baseUrl}users/${userId}`, options);
+  };
+
   const postUser = async (data) => {
     const options = {
       method: 'POST',
@@ -123,7 +130,7 @@ const useUser = () => {
     return await doFetch(baseUrl + 'users', options);
   };
 
-  return {getUserByToken, postUser, checkUsername, putUser};
+  return {getUserByToken, getUserById, postUser, checkUsername, putUser};
 };
 
 const useTag = () => {
@@ -146,4 +153,32 @@ const useTag = () => {
   return {postTag, getFilesByTag};
 };
 
-export {useMedia, useLogin, useUser, useTag};
+const useFavorite = () => {
+  const postFavorite = async (fileId, token) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token,
+      },
+      body: JSON.stringify({file_id: fileId}),
+    };
+    return await doFetch(`${baseUrl}favourites`, options);
+  };
+
+  const getFavoritesByFileId = async (fileId) => {
+    return await doFetch(`${baseUrl}favourites/file/${fileId}`);
+  };
+
+  const deleteFavorite = async (fileId, token) => {
+    const options = {
+      method: 'DELETE',
+      headers: {'x-access-token': token},
+    };
+    return await doFetch(`${baseUrl}favourites/file/${fileId}`, options);
+  };
+
+  return {postFavorite, getFavoritesByFileId, deleteFavorite};
+};
+
+export {useMedia, useLogin, useUser, useTag, useFavorite};
