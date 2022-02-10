@@ -164,7 +164,7 @@ const Upload = ({navigation}) => {
           )}
           name="description"
         />
-        <Button title="Choose image" onPress={pickImage} />
+        <Button title="Choose file" onPress={pickImage} />
         <Button
           disabled={!imageSelected}
           loading={loading}

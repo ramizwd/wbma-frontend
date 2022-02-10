@@ -72,6 +72,16 @@ const Profile = ({navigation}) => {
           marginHorizontal: 20,
         }}
       />
+      <Button
+        title="My Files"
+        onPress={() => {
+          navigation.navigate('My Files');
+        }}
+        buttonStyle={{
+          borderRadius: 6,
+          marginHorizontal: 20,
+        }}
+      />
     </SafeAreaView>
   );
 };

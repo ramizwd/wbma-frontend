@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {TouchableOpacity, Keyboard, View, StyleSheet} from 'react-native';
+import {TouchableOpacity, Keyboard, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../context/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,9 +8,10 @@ import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import {ButtonGroup, Card} from 'react-native-elements';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Logo from '../assets/logo.svg';
+import LottieView from 'lottie-react-native';
 
 const Login = ({navigation}) => {
+  const animation = React.createRef();
   const [formToggle, setFormToggle] = useState(true);
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {getUserByToken} = useUser();
@@ -35,6 +36,7 @@ const Login = ({navigation}) => {
 
   useEffect(() => {
     checkToken();
+    animation.current?.play();
   }, []);
 
   return (
@@ -43,10 +45,15 @@ const Login = ({navigation}) => {
       style={{flex: 1}}
       activeOpacity={1}
     >
+      <Card.Image style={styles.fakeImage}>
+        <LottieView
+          ref={animation}
+          source={require('../assets/lottie-animation.json')}
+          style={styles.animation}
+          loop={false}
+        />
+      </Card.Image>
       <KeyboardAwareScrollView>
-        <View style={styles.appTitle}>
-          <Logo style={styles.logo} />
-        </View>
         <Card>
           <ButtonGroup
             onPress={() => setFormToggle(!formToggle)}
@@ -79,8 +86,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
   },
-  logo: {
-    height: 100,
+  animation: {
+    justifyContent: 'center',
+    flex: 1,
+  },
+  fakeImage: {
+    backgroundColor: '#fff',
   },
 });
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -14,6 +14,7 @@ import {Video} from 'expo-av';
 import {Avatar} from 'react-native-elements/dist/avatar/Avatar';
 import {useFavorite, useTag, useUser} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {MainContext} from '../context/MainContext';
 
 const Single = ({route}) => {
   const {file} = route.params;
@@ -25,6 +26,7 @@ const Single = ({route}) => {
   const [avatar, setAvatar] = useState('http://placekitten.com/180');
   const [likes, setLikes] = useState([]);
   const [userLike, setUserLike] = useState(false);
+  const {user} = useContext(MainContext);
 
   const fetchOwner = async () => {
     try {
@@ -44,7 +46,6 @@ const Single = ({route}) => {
       if (avatarArray.length === 0) return;
       const avatar = avatarArray.pop();
       setAvatar(uploadsUrl + avatar.filename);
-      console.log('single.js avatar', avatar);
     } catch (error) {
       console.log(error.message);
     }
@@ -54,6 +55,9 @@ const Single = ({route}) => {
     try {
       const likesData = await getFavoritesByFileId(file.file_id);
       setLikes(likesData);
+      likesData.forEach((like) => {
+        like.user_id === user.user_id && setUserLike(true);
+      });
     } catch (error) {
       console.error('fetchLikes() error', error);
     }
@@ -62,7 +66,8 @@ const Single = ({route}) => {
   const createFavorite = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      await postFavorite(file.file_id, token);
+      const response = await postFavorite(file.file_id, token);
+      response && setUserLike(true);
     } catch (error) {
       console.error('createFavorite error', error);
     }
@@ -71,7 +76,8 @@ const Single = ({route}) => {
   const removeFavorite = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      await deleteFavorite(file.file_id, token);
+      const response = await deleteFavorite(file.file_id, token);
+      response && setUserLike(false);
     } catch (error) {
       console.error('removeFavorite error', error);
     }
@@ -80,8 +86,11 @@ const Single = ({route}) => {
   useEffect(() => {
     fetchOwner();
     fetchAvatar();
-    fetchLikes();
   }, []);
+
+  useEffect(() => {
+    fetchLikes();
+  }, [userLike]);
 
   return (
     <ScrollView>
